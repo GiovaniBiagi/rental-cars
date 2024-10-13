@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  name        String
+  password    String
+  dateOfBirth DateTime
+  rentals     Rental[] @relation("UserRentals")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+
+  @@index([email, id])
+  @@map("users")
+}
+
+model Car {
+  id        String   @id @default(cuid())
+  year      Int
+  model     String
+  dailyRate Float
+  available Boolean
+  rentals   Rental[] @relation("CarRentals")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@index([id, model])
+  @@map("cars")
+}
+
+model Rental {
+  id        String   @id @default(cuid())
+  userId    String
+  carId     String
+  startDate DateTime
+  endDate   DateTime
+  user      User     @relation("UserRentals", fields: [userId], references: [id])
+  car       Car      @relation("CarRentals", fields: [carId], references: [id])
+  totalCost Float    @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@index([userId, carId])
+  @@map("rentals")
+}

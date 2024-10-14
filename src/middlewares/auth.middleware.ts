@@ -17,7 +17,7 @@ export const authMiddleware = (
 
   jwt.verify(token, envs.JWT_SECRET, (err) => {
     if (err) {
-      response.status(403).json({ message: "Forbidden" });
+      response.status(403).json({ message: "Invalid token provided" });
       return;
     }
 

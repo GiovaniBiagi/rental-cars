@@ -385,11 +385,6 @@
       "post": {
         "tags": ["Autenticação"],
         "summary": "Realiza registro",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -467,7 +462,7 @@
         }
       }
     },
-    "/me": {
+    "/users/me": {
       "get": {
         "tags": ["Usuários"],
         "summary": "Retona dados do usuário logado",
